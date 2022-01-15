@@ -20,6 +20,7 @@
     "install": "^0.13.0",
     "materialize-css": "^1.0.0-rc.2",
     "mongoose": "^6.1.6",
+    "netlify": "^10.1.1",
     "npm": "^8.3.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
@@ -30,6 +31,9 @@
   "scripts": {
     "start": "node src/server/server.js",
     "build": "react-scripts build",
+    "build2": "cd public && npm run build",
+    "install-public2": "cd public && npm install",
+    "heroku-postbuild2": "npm run install-public && npm run build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -50,5 +54,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "favicons-webpack-plugin": "^5.0.2",
+    "webpack-pwa-manifest": "^4.3.0"
   }
 }
