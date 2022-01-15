@@ -17,7 +17,7 @@ import { CardActionArea } from '@mui/material';
 // Loads all the posts saved in the database regardless of their poster
 const loadPosts = async function(setPostsList){
   console.log('in load posts')
-  const results = await axios.get('http://localhost:3001/TextPost')
+  const results = await axios.get('/TextPost')
   const data = results.data
   // console.log(data)
   let posts = data.map(d => { return { user: d.user.username, text: d.text } })
@@ -53,7 +53,7 @@ export default function HomePage(props) {
     console.log(newPost)
     try {
       // save post to database
-      await axios.post(`http://localhost:3001/TextPost`, newPost)
+      await axios.post(`/TextPost`, newPost)
       // after the new post is saved in the database, update the client's posts list
       addNewPost({user: props.user.user.user.username,
                   text: post})

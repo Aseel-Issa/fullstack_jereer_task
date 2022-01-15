@@ -32,7 +32,7 @@ export default function  LoginPage (props){
     const login = async () => {
         try {
             // check if the user exists in the app's database through his email
-            let returnedUser = await axios.get(`http://localhost:3001/User/`+email)
+            let returnedUser = await axios.get(`/User/`+email)
             // if user exists then let him sign in through firbase and update app if sign in succeeded and alert error message to user otherwise
             if(returnedUser.data.length != 0){
                 try{

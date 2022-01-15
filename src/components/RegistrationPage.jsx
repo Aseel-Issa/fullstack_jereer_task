@@ -76,7 +76,7 @@ export default function RegistrationPage(props) {
             }
             // console.log(ourUser)
             // save user into database
-            let savedUser = await axios.post(`http://localhost:3001/User`, ourUser)
+            let savedUser = await axios.post(`/User`, ourUser)
             console.log({user: {user: savedUser.data}})
             // appdate app that the user has been logged in 
             await props.updateLoggedInUser({user: {user: savedUser.data}})

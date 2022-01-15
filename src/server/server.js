@@ -1,6 +1,7 @@
 const express = require('express')
 const api = require('./api')
 const app = express()
+const path = require('path')
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
@@ -11,11 +12,16 @@ app.use(function (req, res, next) {
 
     next()
 })
+app.use(express.static(path.join(__dirname, 'build')));
 
 app.use('/', api)
 
+app.get('*', function (req, res) {
+    res.sendFile(path.join(__dirname, 'build', 'index.html'));
+});
+
 // server code is runnable on port 3001
-const port = 3001
+const port = process.env.PORT || 3001
 app.listen(port, function () {
     console.log(`Running server on port ${port}`)
 })
