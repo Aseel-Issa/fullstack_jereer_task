@@ -31,7 +31,7 @@
   "scripts": {
     "start": "node src/server/server.js",
     "build2": "react-scripts build",
-    "build": "npm run build",
+    "build": "npm run ../build",
     "install-public": "npm install",
     "heroku-postbuild": "npm run install-public && npm run build",
     "test": "react-scripts test",
