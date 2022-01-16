@@ -2,9 +2,6 @@ const express = require('express')
 const api = require('./api')
 const app = express()
 const path = require('path')
-// const publicPath = path.join(__dirname, '..', '..', 'public', 'build');
-// console.log(publicPath)
-// const publicPath = '/Users/aseel/elevation/code/elevation-exercises/project/fullstack_jereer_task/public'
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
@@ -15,20 +12,10 @@ app.use(function (req, res, next) {
 
     next()
 })
-// app.use(express.static(path.join(__dirname, "..", "..", "public")));
 
 app.use(express.static('build'));
-// app.use(express.static(publicPath));
 
 app.use('/', api)
-
-// app.get('*', (req, res) => {
-//    res.sendFile(path.join(publicPath, 'index.html'));
-// });
-
-// app.get('*', function (req, res) {
-//     res.sendFile(path.join(__dirname, "..", "..", "public", 'index.html'));
-// });
 
 // server code is runnable on port 3001
 const port = process.env.PORT || 3001
