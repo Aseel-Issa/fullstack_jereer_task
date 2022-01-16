@@ -30,10 +30,10 @@
   },
   "scripts": {
     "start": "node src/server/server.js",
-    "build": "react-scripts build",
-    "build2": "cd public && npm run build",
-    "install-public2": "cd public && npm install",
-    "heroku-postbuild2": "npm run install-public && npm run build",
+    "build2": "react-scripts build",
+    "build": "npm run build",
+    "install-public": "npm install",
+    "heroku-postbuild": "npm run install-public && npm run build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
