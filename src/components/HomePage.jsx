@@ -1,8 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import LoginPage from './LoginPage';
-import RegistrationPage from './RegistrationPage'
-import { BrowserRouter as Router, Route, Link as RouterLink, HashRouter, Routes } from 'react-router-dom'
-import Link from "@material-ui/core/Link";
 import { Button, Grid } from '@mui/material';
 import {
   TextField,
@@ -13,6 +9,7 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import { CardActionArea } from '@mui/material';
+import Post from '../classes/Post'
 
 // Loads all the posts saved in the database regardless of their poster
 const loadPosts = async function(setPostsList){
@@ -20,7 +17,8 @@ const loadPosts = async function(setPostsList){
   const results = await axios.get('/TextPost')
   const data = results.data
   // console.log(data)
-  let posts = data.map(d => { return { user: d.user.username, text: d.text } })
+  // let posts = data.map(d => { return { user: d.user.username, text: d.text } })
+  let posts = data.map(d => { return new Post(d.user, d.text) })
   // console.log(posts)
   setPostsList(posts)
 }
@@ -47,16 +45,19 @@ export default function HomePage(props) {
 
   // create a new post with text attribute and user attribute which holds the poster's id
   const submit = async () => {
-    const userID = props.user.user.user._id
-    let newPost = {user: userID,
-                    text: post}
+    // const userID = props.user._id
+    // let newPost = {user: userID,
+    //                 text: post}
+    let newPost = new Post(props.user, post)
     console.log(newPost)
     try {
       // save post to database
-      await axios.post(`/TextPost`, newPost)
+      // await axios.post(`/TextPost`, newPost)
+      await axios.post(`/TextPost`, {user: newPost.user._id, text: newPost.text})
       // after the new post is saved in the database, update the client's posts list
-      addNewPost({user: props.user.user.user.username,
-                  text: post})
+      // addNewPost({user: props.user.username,
+      //   text: post})
+      addNewPost(newPost)
       
     } catch (e) {
         console.log(e.message)
@@ -66,7 +67,7 @@ export default function HomePage(props) {
       <div className='homePage'>
       <Grid container direction="column" spacing={2} justify="center" alignItems="center"  style={{paddingTop:"5%"}} >
         <Grid item style={{ width: "60%" }}>
-        <Typography component="h1" variant="h5" style={{textAlign: 'center'}}>Welcome {props.user.user.user.username}!</Typography>
+        <Typography component="h1" variant="h5" style={{textAlign: 'center'}}>Welcome {props.user.username}!</Typography>
         </Grid>
         <Grid item style={{ width: "60%" }}>
         <Grid container direction="row" spacing={1}>
@@ -109,7 +110,7 @@ export default function HomePage(props) {
         />
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
-          {p.user}
+          {p.user.username}
           </Typography>
           <Typography variant="body2" color="text.secondary">
           {p.text}

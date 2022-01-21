@@ -10,6 +10,7 @@ import { auth } from '../firebase-config'
 import axios from 'axios'
 import Alert from '@mui/material/Alert';
 import {useNavigate} from 'react-router-dom'
+import User from '../classes/User'
 
 
 export default function  LoginPage (props){
@@ -33,12 +34,15 @@ export default function  LoginPage (props){
         try {
             // check if the user exists in the app's database through his email
             let returnedUser = await axios.get(`/User/`+email)
+            console.log(returnedUser)
             // if user exists then let him sign in through firbase and update app if sign in succeeded and alert error message to user otherwise
             if(returnedUser.data.length != 0){
                 try{
-                    const user = await signInWithEmailAndPassword(auth, email, password)
-                    // console.log(returnedUser.data[0])
-                    await props.updateLoggedInUser({user: {user: returnedUser.data[0]}})
+                    const result = await signInWithEmailAndPassword(auth, email, password)
+                    const user = returnedUser.data[0]
+                    const userObj = new User(user.username, user.email,"", user.phone, user.countryCode)
+                    userObj._id = user._id
+                    await props.updateLoggedInUser(userObj)
                     navigate('/')
                 }catch(error){
                     setAlertMessage(error.message)

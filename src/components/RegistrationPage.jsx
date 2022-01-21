@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
-import MenuItem from '@mui/material/MenuItem';
 import {
     Button,
     Grid,
@@ -10,11 +9,9 @@ import {
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../firebase-config'
 import axios from 'axios'
-import InputLabel from '@mui/material/InputLabel';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
 import Autocomplete from '@mui/material/Autocomplete';
 import {useNavigate} from 'react-router-dom'
+import User from '../classes/User'
 
 // Load the list of country codes and its calling codes from a third party API
 const loadCodes = async function (setCodes) {
@@ -62,24 +59,19 @@ export default function RegistrationPage(props) {
 
     // register a new user
     const register = async () => {
-        // console.log(countryCode)
         try {
             // create a user on firebase with the auth object, entered email and password
-            const user = await createUserWithEmailAndPassword(auth, email, password)
+            await createUserWithEmailAndPassword(auth, email, password)
             // if the user was successfully created, then create custom user object
-            const ourUser = {
-                username: username,
-                email: email,
-                password: password,
-                countryCode: countryCode,
-                phone: phone
-            }
-            // console.log(ourUser)
+            const ourUser = new User(username, email, password, countryCode, phone)
             // save user into database
             let savedUser = await axios.post(`/User`, ourUser)
-            console.log({user: {user: savedUser.data}})
+            const returnedData = savedUser.data
+            const user = new User(returnedData.username, returnedData.email, "", returnedData.phone, returnedData.countryCode)
+            user._id = returnedData._id
+            console.log(user)
             // appdate app that the user has been logged in 
-            await props.updateLoggedInUser({user: {user: savedUser.data}})
+            await props.updateLoggedInUser(user)
             navigate('/')
         } catch (e) {
             console.log(e.message)
