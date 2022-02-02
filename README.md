@@ -2,6 +2,8 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+Add your own firebase-config.js file in the src folder in order to integrate the app with firebase
+
 ## Available Scripts
 
 In the project directory, you can run:
