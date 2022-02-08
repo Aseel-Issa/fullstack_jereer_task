@@ -1,3 +1,4 @@
+const axios = require('axios');
 const express = require('express')
 const router = express.Router()
 const db = require('./DbManager')
@@ -17,9 +18,15 @@ router.get('/TextPost', async function (request, response) {
 
 // /User - a POST route that saves a user into the DB
 router.post('/User', async function (request, response) {
+    // pokeAPI has 898 pokemons only
+    const pokeID = Math.floor((Math.random() * 898) + 1);
+    const pokeData = await axios.get('https://pokeapi.co/api/v2/pokemon-form/'+pokeID+'/')
+    const pokeImg = pokeData.data.sprites.front_default
     const user = request.body
+    user.pokemonImg = pokeImg
     const result = await db.saveUser(user)
-    response.send(result)
+    // response.send(result)
+    response.send({_id: result._id, username: result.username, email: result.email, phone: result.phone, countryCode: result.countryCode, pokemonImg: result.pokemonImg})
 })
 
 // /User - a GET route that finds a user in database by filtering on email

@@ -39,8 +39,10 @@ export default function  LoginPage (props){
             if(returnedUser.data.length != 0){
                 try{
                     const result = await signInWithEmailAndPassword(auth, email, password)
+                    console.log('returnedUser: '+returnedUser)
                     const user = returnedUser.data[0]
-                    const userObj = new User(user.username, user.email,"", user.phone, user.countryCode)
+                    console.log('user: '+user)
+                    const userObj = new User(user.username, user.email,"", user.phone, user.countryCode, user.pokemonImg)
                     userObj._id = user._id
                     await props.updateLoggedInUser(userObj)
                     navigate('/')

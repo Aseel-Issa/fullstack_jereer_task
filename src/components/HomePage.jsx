@@ -16,10 +16,8 @@ const loadPosts = async function(setPostsList){
   console.log('in load posts')
   const results = await axios.get('/TextPost')
   const data = results.data
-  // console.log(data)
-  // let posts = data.map(d => { return { user: d.user.username, text: d.text } })
   let posts = data.map(d => { return new Post(d.user, d.text) })
-  // console.log(posts)
+  // posts.forEach(p => {console.log(p)})
   setPostsList(posts)
 }
 
@@ -45,20 +43,14 @@ export default function HomePage(props) {
 
   // create a new post with text attribute and user attribute which holds the poster's id
   const submit = async () => {
-    // const userID = props.user._id
-    // let newPost = {user: userID,
-    //                 text: post}
+    console.log(props.user)
     let newPost = new Post(props.user, post)
     console.log(newPost)
     try {
       // save post to database
-      // await axios.post(`/TextPost`, newPost)
-      await axios.post(`/TextPost`, {user: newPost.user._id, text: newPost.text})
+      let result = await axios.post(`/TextPost`, {user: newPost.user._id, text: newPost.text})
       // after the new post is saved in the database, update the client's posts list
-      // addNewPost({user: props.user.username,
-      //   text: post})
-      addNewPost(newPost)
-      
+      addNewPost(newPost)      
     } catch (e) {
         console.log(e.message)
     }
@@ -105,7 +97,7 @@ export default function HomePage(props) {
         style={{width: 'fit-content'}}
           component="img"
           height="200"
-          image={require("../images/download.png")}
+          image = {("pokemonImg" in p.user && p.user.pokemonImg !== undefined) ? p.user.pokemonImg : require("../images/download.png")}
           alt="photo"
         />
         <CardContent>

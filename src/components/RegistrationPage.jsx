@@ -63,11 +63,13 @@ export default function RegistrationPage(props) {
             // create a user on firebase with the auth object, entered email and password
             await createUserWithEmailAndPassword(auth, email, password)
             // if the user was successfully created, then create custom user object
-            const ourUser = new User(username, email, password, countryCode, phone)
+            const ourUser = new User(username, email, password, phone, countryCode, undefined)
             // save user into database
             let savedUser = await axios.post(`/User`, ourUser)
+            console.log("savedUser")
+            console.log(savedUser)
             const returnedData = savedUser.data
-            const user = new User(returnedData.username, returnedData.email, "", returnedData.phone, returnedData.countryCode)
+            const user = new User(returnedData.username, returnedData.email, "", returnedData.phone, returnedData.countryCode, returnedData.pokemonImg)
             user._id = returnedData._id
             console.log(user)
             // appdate app that the user has been logged in 

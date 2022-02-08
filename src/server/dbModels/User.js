@@ -5,9 +5,10 @@ const Schema = mongoose.Schema
 const userSchema = new Schema({
     username: String,
     email: String,
-    password: String,
+    password: { type: String, select: false},
     phone: String,
-    countryCode: String
+    countryCode: String,
+    pokemonImg: String
 })
 
 const UserModel = mongoose.model('user', userSchema)
@@ -25,7 +26,7 @@ const saveUser = async function(userObj){
 
 const getUser = async function(userObj){
         try{
-            let data = await UserModel.find(userObj)
+            let data = await UserModel.find(userObj, {password: 0})
             return data
         }catch(e){
             return e.toString()
